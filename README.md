@@ -7,8 +7,8 @@ The AI never writes note content for you.
 ## Install
 
 ```
-/plugin marketplace add JEFF7712/vault-mind
-/plugin install vault-mind@vault-mind
+/plugin marketplace add JEFF7712/rupans-ai-plugins
+/plugin install vault-mind@rupans-ai-plugins
 ```
 
 Then run `/vault-mind:init` once in your vault. It detects your layout and frontmatter schema
