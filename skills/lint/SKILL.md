@@ -27,6 +27,7 @@ Links that don't resolve to a note or resource file (and aren't embeds/people).
 rg -oN '\[\[[^]|#]+' <notes_dir> | sed 's/.*\[\[//; s/^ *//; s/ *$//' \
   | rg -vi '\.(png|jpe?g|gif|webp|avif|svg|mp4|pdf|excalidraw)$' \
   | rg -v '^[0-9 ,.]+$' | sort -u > /tmp/linked.txt
+# omit <resources_dirs> if the profile lists none (a missing path makes fd error):
 fd -e md . <notes_dir> <resources_dirs> | sed 's#.*/##;s#\.md$##' | sort -u > /tmp/existing.txt
 comm -23 /tmp/linked.txt /tmp/existing.txt
 ```
