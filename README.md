@@ -38,12 +38,15 @@ recommend -> read -> discuss / socratic-philosophy -> you write the note
 
 ## Install
 
-```bash
-claude --plugin-dir /path/to/vault-mind
+```
+/plugin marketplace add JEFF7712/vault-mind
+/plugin install vault-mind@vault-mind
 ```
 
-Then run `/vault-mind:init` in your vault. Assumes an atomic-note vault with YAML frontmatter
-and `[[wikilinks]]`; sparser vaults degrade gracefully.
+Then run `/vault-mind:init` in your vault. (Local dev: `claude --plugin-dir /path/to/vault-mind`.)
+
+Assumes an atomic-note vault with YAML frontmatter and `[[wikilinks]]`; sparser vaults degrade
+gracefully.
 
 ## License
 
