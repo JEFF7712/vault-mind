@@ -1,0 +1,5 @@
+# OS / editor cruft
+.DS_Store
+
+# Per-machine Claude Code settings (not for the repo)
+.claude/settings.local.json
