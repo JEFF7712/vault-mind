@@ -37,7 +37,7 @@ Build a picture from the vault. Search broadly — the topic's exact tag, relate
 # from the vault root; substitute the profile's dir/key names:
 rg -l 'topic-tag' <resources_dirs> <notes_dir>          # files touching the topic
 rg -N '^(<status_key>|<rating_key>|tags|genres):' <resources_dirs>/<file>   # one item's signal
-rg -l '<status_key>: <read_value>' <resources_dirs>      # everything consumed
+rg -l '^<status_key>: <read_value>$' <resources_dirs>    # everything consumed (anchor $ — "read" is a prefix of "reading")
 ```
 
 ### 2. Infer taste and find gaps

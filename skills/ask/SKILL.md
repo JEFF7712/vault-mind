@@ -25,7 +25,7 @@ Search broadly before answering — names, tags, wikilinks, frontmatter fields.
 # from the vault root; substitute the profile's dir/key names:
 rg -l -i 'term' <notes_dir> <resources_dirs>            # files on the topic
 rg -i 'term' "<notes_dir>/X.md"                          # what a note actually says
-rg -l '<status_key>: <read_value>' <resources_dirs>      # consumed readings
+rg -l '^<status_key>: <read_value>$' <resources_dirs>    # consumed readings (anchor $ — "read" is a prefix of "reading")
 rg -N '^(<rating_key>|<status_key>|tags|genres):' <resources_dirs>/**/*.md   # metadata queries
 ```
 
