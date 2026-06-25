@@ -33,12 +33,12 @@ shape. Edit by hand or re-run /vault-mind:init. Keep paths relative to the vault
 
 | Role | Key | Values / scale |
 |------|-----|----------------|
-| title | `title` | — |
+| title | `title` |, |
 | author | `author` | wikilink(s) to a person note |
 | status | `status` | `read` \| `reading` \| `to be read` \| `DNF` |
 | rating | `rating` | 0–10 (decimal, quoted); or `DNF`; blank if unrated |
 | tags | `tags` | hierarchical |
-| online source | `url` | — |
+| online source | `url` |, |
 | local copy | `local` | wikilink to fetched file (set by /vault-mind:fetch) |
 
 ## Conventions
