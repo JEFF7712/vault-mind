@@ -4,11 +4,19 @@ Learning-first skills for a Markdown knowledge vault (Obsidian, Foam, Zettelkast
 reads, quizzes, connects, and pressure-tests your understanding, but you write your own notes.
 The AI never writes note content for you.
 
-## Setup
+## Install
 
-Run `/vault-mind:init` once. It detects your vault's layout and frontmatter schema and writes
-`.vault-mind/profile.md`, which every other skill reads. That profile is what lets the kit
-work on any vault shape.
+```
+/plugin marketplace add JEFF7712/vault-mind
+/plugin install vault-mind@vault-mind
+```
+
+Then run `/vault-mind:init` once in your vault. It detects your layout and frontmatter schema
+and writes `.vault-mind/profile.md`, which every other skill reads (that profile is what lets
+the kit work on any vault shape). Local dev: `claude --plugin-dir /path/to/vault-mind`.
+
+Assumes an atomic-note vault with YAML frontmatter and `[[wikilinks]]`; sparser vaults degrade
+gracefully.
 
 ## Skills
 
@@ -35,18 +43,6 @@ gets written; never AI-authored prose.
 recommend -> read -> discuss / socratic-philosophy -> you write the note
    -> feynman -> quiz -> connect -> gaps (what to write next)
 ```
-
-## Install
-
-```
-/plugin marketplace add JEFF7712/vault-mind
-/plugin install vault-mind@vault-mind
-```
-
-Then run `/vault-mind:init` in your vault. (Local dev: `claude --plugin-dir /path/to/vault-mind`.)
-
-Assumes an atomic-note vault with YAML frontmatter and `[[wikilinks]]`; sparser vaults degrade
-gracefully.
 
 ## License
 
