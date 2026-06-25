@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "vault-mind",
-  "description": "Learning-first skills for Markdown knowledge vaults (Obsidian, Foam, Zettelkasten) — the AI never writes your notes for you.",
+  "description": "Learning-first skills for Markdown knowledge vaults (Obsidian, Foam, Zettelkasten). The AI never writes your notes for you.",
   "owner": {
     "name": "Rupan Sunderapandyan"
   },
@@ -9,7 +9,7 @@
     {
       "name": "vault-mind",
       "source": "./",
-      "description": "Learning-first skills for a Markdown knowledge vault — quiz, Feynman, Socratic argument drilling, gap-finding, link-surfacing, grounded Q&A. The AI never writes your notes for you; it makes you think. Run /vault-mind:init once to profile your vault."
+      "description": "Learning-first skills for a Markdown knowledge vault: quiz, Feynman, Socratic argument drilling, gap-finding, link-surfacing, grounded Q&A. The AI never writes your notes for you; it makes you think. Run /vault-mind:init once to profile your vault."
     }
   ]
 }
