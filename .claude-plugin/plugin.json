@@ -1,7 +1,7 @@
 {
   "name": "vault-mind",
   "description": "Learning-first skills for an Obsidian (or any Markdown) knowledge vault: quiz, Feynman, Socratic argument drilling, gap-finding, link-surfacing, grounded Q&A. The AI never writes your notes for you; it makes you think. Run /vault-mind:init once to profile your vault.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": {
     "name": "Rupan"
   },

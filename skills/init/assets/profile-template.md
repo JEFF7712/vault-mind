@@ -25,7 +25,10 @@ shape. Edit by hand or re-run /vault-mind:init. Keep paths relative to the vault
 | source readings | `resources` |
 | created date | `date` |
 | review date (for /vault-mind:quiz spacing) | `reviewed` |
-| audited date (for /vault-mind:audit incremental skip) | `audited` |
+
+- **audited stamp (for /vault-mind:audit incremental skip):** trailing HTML comment
+  `<!-- audited: YYYY-MM-DD -->` at the end of the note, *not* a frontmatter key (keeps it out
+  of Obsidian's Properties panel).
 
 - **tag style:** hierarchical (`a/b` ⊂ `a`)      <!-- or: flat -->
 - **wikilink style:** `[[Title]]`                <!-- or: [[path/Title]] | plain markdown links -->

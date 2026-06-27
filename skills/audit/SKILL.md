@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Use when the user wants their notes on objective subject matter (math, physics, CS, philosophy, etc.) checked for things that are actually wrong, e.g. "audit my MSM notes for errors", "fact-check my philosophy of mind notes", "is anything in my #physics notes incorrect", "audit what I've changed since last time". Batch-scans standing note CONTENT for factual errors, internal contradictions, misattributions, and conceptual conflations, web-verifying suspect claims before flagging. Diagnoses; you fix. Never writes note prose; stamps an audited date by default (metadata only).
+description: Use when the user wants their notes on objective subject matter (math, physics, CS, philosophy, etc.) checked for things that are actually wrong, e.g. "audit my MSM notes for errors", "fact-check my philosophy of mind notes", "is anything in my #physics notes incorrect", "audit what I've changed since last time". Batch-scans standing note CONTENT for factual errors, internal contradictions, misattributions, and conceptual conflations, web-verifying suspect claims before flagging. Diagnoses; you fix. Never writes note prose; by default stamps a hidden audited-date HTML comment at the end of each checked note (kept out of Obsidian's Properties panel).
 ---
 
 # Audit (correctness pass)
@@ -12,9 +12,10 @@ you'd never think to re-open.
 
 **Core rules:**
 - **Never write note prose.** You diagnose: name the wrong claim, the correct version, and a
-  source. The user repairs their own note. The only write you ever make is stamping an
-  `audited` date in frontmatter, which you do by default (metadata only, never prose); the
-  user can opt out by saying so.
+  source. The user repairs their own note. The only write you ever make is the `audited` stamp:
+  a hidden `<!-- audited: YYYY-MM-DD -->` HTML comment appended at the **end of the note**, which
+  you do by default (never prose); the user can opt out by saying so. It lives in a trailing
+  comment, not a frontmatter key, deliberately, so it stays out of Obsidian's Properties panel.
 - **Objective matter only.** Math, physics, CS, philosophy, etc. — claims with a defensible
   right answer. Skip personal/journal/opinion notes; if a target looks personal, say so and
   leave it alone.
@@ -26,7 +27,8 @@ you'd never think to re-open.
 
 Read the vault profile (`.vault-mind/profile.md`) first if you haven't this session (paths +
 frontmatter schema); run `/vault-mind:init` if missing. Run from the vault root and substitute
-the profile's dir/key names below.
+the profile's dir/key names below. The `audited` stamp is a trailing HTML comment, not a
+frontmatter key (see step 6); the profile documents it as such.
 
 ## 1. Resolve the target set
 
@@ -46,16 +48,17 @@ visible) even though you only report on the target set itself.
 
 ## 2. Incremental skip
 
-Audit stamps `audited: <date>` (see step 6). Skip any note already audited at or after its last
-edit, it hasn't changed since you last checked it. In bare/"since last time" mode this *is* the
-selector: audit every note whose `audited` is missing or older than its file mtime.
+Audit stamps a trailing `<!-- audited: <date> -->` comment (see step 6). Skip any note already
+audited at or after its last edit, it hasn't changed since you last checked it. In bare/"since
+last time" mode this *is* the selector: audit every note whose audited stamp is missing or older
+than its file mtime.
 
 ```bash
 # notes changed since their last audit stamp (mtime newer than the stamp, or no stamp)
 for f in <notes_dir>/*.md; do
-  stamp=$(rg -m1 '^audited:' "$f" | sed 's/audited:[[:space:]]*//')
+  stamp=$(rg -oNm1 'audited:\s*\K[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f")
   mtime=$(date -r "$f" +%F)
-  [ -z "$stamp" ] || [ "$stamp" \< "$mtime" ] && echo "$f"
+  { [ -z "$stamp" ] || [ "$stamp" \< "$mtime" ]; } && echo "$f"
 done
 ```
 
@@ -105,9 +108,15 @@ causal/logical claims). Sort candidate problems into buckets, **priority-ordered
    interpretive-pushback bucket last and visibly separate. For each finding give:
    `file:line` · bucket · confidence · **the wrong claim** → **the correct version** → **source**.
 2. If a note came back clean, say so plainly, that's a real result, not a non-answer.
-3. **By default**, stamp `audited: <today>` on every note you actually checked (clean or
-   flagged), preserving frontmatter key order, no need to ask first. Skip the stamp only if the
-   user opted out. This is the only write. **Do not edit note prose**, even to
+3. **By default**, stamp every note you actually checked (clean or flagged), no need to ask
+   first. Skip the stamp only if the user opted out. The stamp is a single hidden line appended
+   at the **end of the note**:
+   ```
+   <!-- audited: <today> -->
+   ```
+   If the note already has one, update its date in place rather than adding a second. Use an HTML
+   comment, not a frontmatter key, on purpose: it stays out of Obsidian's Properties panel and is
+   invisible in reading/live-preview. This is the only write. **Do not edit note prose**, even to
    "just fix" an obvious typo in a claim; that's the user's to fix (and mechanical frontmatter
    issues are `/vault-mind:lint`'s job).
 4. Offer to re-audit a note once they've revised it.
