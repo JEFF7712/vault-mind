@@ -25,6 +25,7 @@ shape. Edit by hand or re-run /vault-mind:init. Keep paths relative to the vault
 | source readings | `resources` |
 | created date | `date` |
 | review date (for /vault-mind:quiz spacing) | `reviewed` |
+| audited date (for /vault-mind:audit incremental skip) | `audited` |
 
 - **tag style:** hierarchical (`a/b` ⊂ `a`)      <!-- or: flat -->
 - **wikilink style:** `[[Title]]`                <!-- or: [[path/Title]] | plain markdown links -->

@@ -33,6 +33,7 @@ gracefully.
 | `connect` | Surface missing wikilinks between notes (you approve each). |
 | `gaps` | Your next-write queue: dead links, recurring un-noted terms. |
 | `lint` | Vault hygiene: broken links, dupes, empty notes, frontmatter drift. |
+| `audit` | Correctness pass: fact-check note content, web-verified, errors only. |
 
 Skills are namespaced `/vault-mind:<skill>`. Only metadata, or by opt-in your own words, ever
 gets written; never AI-authored prose.
