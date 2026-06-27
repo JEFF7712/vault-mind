@@ -56,7 +56,7 @@ than its file mtime.
 ```bash
 # notes changed since their last audit stamp (mtime newer than the stamp, or no stamp)
 for f in <notes_dir>/*.md; do
-  stamp=$(rg -oNm1 'audited:\s*\K[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f")
+  stamp=$(rg -oNPm1 'audited:\s*\K[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f")  # -P: \K needs PCRE2
   mtime=$(date -r "$f" +%F)
   { [ -z "$stamp" ] || [ "$stamp" \< "$mtime" ]; } && echo "$f"
 done
