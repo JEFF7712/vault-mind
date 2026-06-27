@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Use when the user wants their notes on objective subject matter (math, physics, CS, philosophy, etc.) checked for things that are actually wrong, e.g. "audit my MSM notes for errors", "fact-check my philosophy of mind notes", "is anything in my #physics notes incorrect", "audit what I've changed since last time". Batch-scans standing note CONTENT for factual errors, internal contradictions, misattributions, and conceptual conflations, web-verifying suspect claims before flagging. Diagnoses; you fix. Never writes note prose; only stamps an audited date with approval.
+description: Use when the user wants their notes on objective subject matter (math, physics, CS, philosophy, etc.) checked for things that are actually wrong, e.g. "audit my MSM notes for errors", "fact-check my philosophy of mind notes", "is anything in my #physics notes incorrect", "audit what I've changed since last time". Batch-scans standing note CONTENT for factual errors, internal contradictions, misattributions, and conceptual conflations, web-verifying suspect claims before flagging. Diagnoses; you fix. Never writes note prose; stamps an audited date by default (metadata only).
 ---
 
 # Audit (correctness pass)
@@ -13,7 +13,8 @@ you'd never think to re-open.
 **Core rules:**
 - **Never write note prose.** You diagnose: name the wrong claim, the correct version, and a
   source. The user repairs their own note. The only write you ever make is stamping an
-  `audited` date in frontmatter, and only with approval.
+  `audited` date in frontmatter, which you do by default (metadata only, never prose); the
+  user can opt out by saying so.
 - **Objective matter only.** Math, physics, CS, philosophy, etc. — claims with a defensible
   right answer. Skip personal/journal/opinion notes; if a target looks personal, say so and
   leave it alone.
@@ -104,8 +105,9 @@ causal/logical claims). Sort candidate problems into buckets, **priority-ordered
    interpretive-pushback bucket last and visibly separate. For each finding give:
    `file:line` · bucket · confidence · **the wrong claim** → **the correct version** → **source**.
 2. If a note came back clean, say so plainly, that's a real result, not a non-answer.
-3. With approval, stamp `audited: <today>` on every note you actually checked (clean or flagged),
-   preserving frontmatter key order. This is the only write. **Do not edit note prose**, even to
+3. **By default**, stamp `audited: <today>` on every note you actually checked (clean or
+   flagged), preserving frontmatter key order, no need to ask first. Skip the stamp only if the
+   user opted out. This is the only write. **Do not edit note prose**, even to
    "just fix" an obvious typo in a claim; that's the user's to fix (and mechanical frontmatter
    issues are `/vault-mind:lint`'s job).
 4. Offer to re-audit a note once they've revised it.
