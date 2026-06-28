@@ -3,3 +3,7 @@
 
 # Per-machine Claude Code settings (not for the repo)
 .claude/settings.local.json
+
+# Local AI agent instructions (not for the repo)
+CLAUDE.md
+AGENTS.md
