@@ -1,6 +1,6 @@
 ---
 name: lint
-description: Use when the user wants to check or clean up the vault's consistency/hygiene, e.g. "lint my vault", "find broken links", "any duplicate or empty notes", "check my frontmatter", "audit my tags". Reports structural/metadata problems (broken links, dupes, empty notes, frontmatter drift, tag-taxonomy drift) and fixes the safe ones with approval. Never writes note prose.
+description: Use when the user wants to check or clean up the vault's consistency/hygiene, e.g. "lint my vault", "find broken links", "any duplicate or empty notes", "check my frontmatter", "audit my tags", "update my MOCs", "sync my maps of content". Reports structural/metadata problems (broken links, dupes, empty notes, frontmatter drift, tag-taxonomy drift, out-of-date MOCs) and fixes the safe ones with approval. Never writes note prose.
 ---
 
 # Lint (vault hygiene)
@@ -64,13 +64,53 @@ Report them; they write the body (or delete the stray).
 - **Tags**: flag obviously malformed tags (spaces, stray punctuation) and inconsistent
   spellings/depths. Don't force a taxonomy.
 
+### 5. MOC sync (maps of content out of date)
+A **MOC** (map of content) is a hub note that indexes a cluster of notes via wikilinks. In
+this vault a MOC is any note containing a `# Map of Content` section immediately followed by
+a marker comment declaring the cluster tag(s) it governs:
+```
+# Map of Content
+<!-- moc-cluster: cs/ai/ml -->
+```
+The marker may list several comma-separated tags (e.g. `<!-- moc-cluster: philosophy/logic, math/logic -->`).
+A MOC stays in sync when every note carrying one of its cluster tags is linked somewhere in it.
+
+For each MOC, find cluster-tagged notes it does **not** yet link (these are the drift), and
+report any links it contains to notes that no longer carry the tag or no longer exist (stale).
+Iterate MOCs with `while read` (note names contain spaces, so `for moc in $(...)` would
+word-split them), and capture the marker through its closing `-->` so no trailing dashes leak
+into the tag list:
+```bash
+rg -lN 'moc-cluster:' <notes_dir> | while IFS= read -r moc; do
+  tags=$(rg -oN 'moc-cluster:.*-->' "$moc" | sed 's/moc-cluster://; s/-->//' \
+         | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | rg .)
+  selfname=$(basename "$moc" .md)
+  # notes that carry any of this MOC's cluster tags (frontmatter list items)
+  tagged=$(for f in <notes_dir>/*.md; do
+    fmtags=$(awk 'NR==1&&/^---/{fm=1;next} fm&&/^---/{exit} fm&&/^ *- /{gsub(/^ *- /,"");print}' "$f")
+    while IFS= read -r t; do echo "$fmtags" | grep -qx "$t" && { basename "$f" .md; break; }; done <<< "$tags"
+  done | sort -u | grep -vxF "$selfname")
+  # link targets already present anywhere in the MOC body
+  linked=$(rg -oN '\[\[[^]|#]+' "$moc" | sed 's/.*\[\[//; s/ *$//' | sort -u)
+  missing=$(comm -23 <(echo "$tagged") <(echo "$linked"))
+  [ -n "$missing" ] && { echo "## $selfname  (missing):"; echo "$missing" | sed 's/^/  /'; }
+done
+```
+**Fix (safe, mechanical):** append each missing note as a bare wikilink under an `## Unsorted`
+heading at the end of that MOC's `# Map of Content` section (create the heading if absent).
+Appending a bare link is a mechanical edit like fixing a broken link, so it's in scope. Do
+**not** sort new links into the MOC's existing topic headings, that grouping is the user's
+judgment, leave them in `## Unsorted` for them to file. Report stale links but don't remove
+them (the user may keep a link deliberately).
+
 ## Presenting and fixing
 
-1. Present findings grouped: **broken links**, **dupes**, **empty notes**, **frontmatter**.
-   Lead with the safely-fixable ones.
+1. Present findings grouped: **broken links**, **dupes**, **empty notes**, **frontmatter**,
+   **out-of-date MOCs**. Lead with the safely-fixable ones.
 2. Offer to fix the **mechanical** ones, broken/case-mismatch links, status typos,
-   malformed frontmatter values, key ordering. Apply only what they approve; preserve
-   frontmatter key order; confirm each change.
+   malformed frontmatter values, key ordering, and appending missing links to MOCs'
+   `## Unsorted`. Apply only what they approve; preserve frontmatter key order; confirm
+   each change.
 3. For **content decisions**: merging near-dupes, writing an empty note's body, propose
    the action but **don't do the writing**. Deleting a note (even a stray) is destructive:
    ask before removing.
